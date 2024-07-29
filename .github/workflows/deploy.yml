@@ -41,5 +41,5 @@ jobs:
         chmod 400 private_key.pem 
         scp -i private_key.pem -o StrictHostKeyChecking=no target/*.jar ${USER}@${HOST}:/deploy/ 
         ssh -o StrictHostKeyChecking=no -i private_key.pem ${USER}@${HOST} '
-          cd ./deploy && ./stop.sh && ./start.sh
+          cd ./deploy
         '
