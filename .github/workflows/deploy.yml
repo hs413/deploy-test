@@ -29,5 +29,5 @@ jobs:
           git fetch --all &&
           git checkout main &&
           git pull &&
-          ./gradlew clean build --exclude-task test 
+          ./gradlew clean 
         '
