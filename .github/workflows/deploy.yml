@@ -29,5 +29,9 @@ jobs:
           cd ./deploy/deploy-test &&
           git fetch --all &&
           git checkout main &&
-          git pull
+          git pull &&
+          ./gradlew clean build --exclude-task test && 
+          cd ../ &&
+          ./stop.sh && 
+          ./start.sh
         '
