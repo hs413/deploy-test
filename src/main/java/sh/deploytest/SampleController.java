@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class SampleController {
     @GetMapping("/")
     public String get() {
-        return "deploy test";
+        return "deploy test!!!!";
     }
 }
