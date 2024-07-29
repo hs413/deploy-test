@@ -9,37 +9,25 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up JDK 17
-      uses: actions/setup-java@v4
-      with:
-        java-version: '17'
-        distribution: 'corretto'
-
-    - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
-
-    - name: Make gradlew executable
-      run: chmod +x ./gradlew
-
-    - name: Build with Gradle Wrapper
-      run: ./gradlew build
-
+    - uses: actions/checkout@v2
+    
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ secrets.AWS_REGION }}
+        
     - name: Deploy to EC2
       env:
         PRIVATE_KEY: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
         HOST: ${{ secrets.EC2_HOST }}
         USER: ec2-user
       run: |
-        echo "$PRIVATE_KEY" > private_key.pem 
-        chmod 400 private_key.pem 
-        scp -i private_key.pem -o StrictHostKeyChecking=no target/*.jar ${USER}@${HOST}:/deploy/ 
+        echo "$PRIVATE_KEY" > private_key.pem &&
+        chmod 400 private_key.pem &&
         ssh -o StrictHostKeyChecking=no -i private_key.pem ${USER}@${HOST} '
-          cd ./deploy
+          cd ./deploy/deploy-test &&
+          git checkout main &&
+          git pull 
         '
