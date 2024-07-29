@@ -29,6 +29,6 @@ jobs:
           git fetch --all &&
           git checkout main &&
           git pull &&
-          ./gradlew clean build --exclude-task test && cd ../
+          ./gradlew clean build --exclude-task test && cd ../ &&
           ./stop.sh && ./start.sh
         '
